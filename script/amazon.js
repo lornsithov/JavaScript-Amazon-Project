@@ -87,7 +87,7 @@ products.forEach((product) => {
       </div>
 
       <div class="product-quantity-container">
-        <select>
+        <select class="js-quantity-selector-${product.id}">
           <option selected value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -118,31 +118,52 @@ products.forEach((product) => {
 // the DOM element for the HTML replacement
 document.querySelector('.js-product-grid').innerHTML = productHTML;
 
+// the DOM element for the buttons inside each product
+// data attributes v dataset
 document.querySelectorAll('.js-add-to-card').forEach((button)=>{
+  // dataset property basically 
+  // gives us all the data attributes 
+  // that attached to the button
   button.addEventListener('click', () => {
     const productId = button.dataset.productId;
+    // since "productName" is inside "dataset", 
+		// then we can use "button.dataset.productName" to set with all the buttons
     let matchingItem;
+    //select value from the options selected
+    const selectedValue = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
+    console.log(selectedValue)
     cart.forEach((item)=>{
+      // item: object in the cart list
       if (item.productId === productId) {
+        // item.productId is the property inside the cart array
+        // "productId" is the variable which equals "button.dataset.productId"
         // if item.productId === button.dataset.productId
         matchingItem = item;
+        // if they match, they will be put inside the empty object, 
+        // the mathcing Item
       }
     });
     if (matchingItem) {
-      matchingItem.quantity += 1;
+      // if the items are matched, "matchingItem.quantity = matchingItem.quantity + 1"
+      // it means if it already in there, we need to add 1 on top of it
+      matchingItem.quantity += selectedValue;
     } else {
+      // else if it's not there yet, then we need to push it to the cart array list
       cart.push({
         productId: productId,
-        quantity: 1
+        quantity: selectedValue
       })
     }
-
+    
     // calculate the total quantity of the product on the cart
     let cartQuantity = 0;
     cart.forEach((item)=>{
       cartQuantity += item.quantity;
     });
+    // replace number on HTML code with the calculated quantity
     document.querySelector('.cart-quantity').innerHTML = cartQuantity;
-    console.log(cartQuantity)
   })
 });
+// forEach to loop through each of the add-to-cart buttons
+// button parameter inside forEach is for those buttons that should added to the parameter when they are clicked
+// now add the addEventListener using the Click function
