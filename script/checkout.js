@@ -2,6 +2,8 @@ import {cart, removeFromCart} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
 
+hello();
+
 let cartSummaryHTML = '';
 
 cart.forEach((cartItem) => {
@@ -110,3 +112,4 @@ document.querySelectorAll('.js-delete-link')
       container.remove();
     });
   });
+
