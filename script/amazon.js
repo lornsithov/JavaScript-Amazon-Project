@@ -55,7 +55,9 @@
 //   }
 // ];
 
-let productHTML = " "; 
+// Add this code after the existing code
+
+let productHTML = ' '; 
 // every time a product is created, it will be stored in this STRING
 products.forEach((product) => {
   // store those objects inside the product parameter when this function is called
@@ -81,7 +83,7 @@ products.forEach((product) => {
       </div>
 
       <div class="product-price">
-        $${(product.priceInCents/100).toFixed(2)}
+        $${(product.priceCents/100).toFixed(2)}
       </div>
 
       <div class="product-quantity-container">
@@ -106,7 +108,7 @@ products.forEach((product) => {
         Added
       </div>
 
-      <button class="add-to-cart-button button-primary">
+      <button class="add-to-cart-button button-primary js-add-to-card" data-product-id="${product.id}">
         Add to Cart
       </button>
     </div>
@@ -115,3 +117,32 @@ products.forEach((product) => {
 
 // the DOM element for the HTML replacement
 document.querySelector('.js-product-grid').innerHTML = productHTML;
+
+document.querySelectorAll('.js-add-to-card').forEach((button)=>{
+  button.addEventListener('click', () => {
+    const productId = button.dataset.productId;
+    let matchingItem;
+    cart.forEach((item)=>{
+      if (item.productId === productId) {
+        // if item.productId === button.dataset.productId
+        matchingItem = item;
+      }
+    });
+    if (matchingItem) {
+      matchingItem.quantity += 1;
+    } else {
+      cart.push({
+        productId: productId,
+        quantity: 1
+      })
+    }
+
+    // calculate the total quantity of the product on the cart
+    let cartQuantity = 0;
+    cart.forEach((item)=>{
+      cartQuantity += item.quantity;
+    });
+    document.querySelector('.cart-quantity').innerHTML = cartQuantity;
+    console.log(cartQuantity)
+  })
+});
