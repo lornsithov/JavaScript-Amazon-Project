@@ -1,7 +1,3 @@
-// create a file inside the "data" folder and name "cart.js"
-// const cart = [];
-// empty the cart
-
 export let cart = JSON.parse(localStorage.getItem('cart'));
 
 if (!cart) {
