@@ -55,7 +55,9 @@
 //   }
 // ];
 
-// Add this code after the existing code
+import {cart} from '../data/cart.js';
+// const cart = [];
+// without module, this would be a conflict
 
 let productHTML = ' '; 
 // every time a product is created, it will be stored in this STRING

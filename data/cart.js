@@ -1,3 +1,4 @@
-// create a file inside the "data" folder and name "cart.js"
-const cart = [];
-// empty the cart
+// any products will be included in this cart 
+// when the user clicks add-to-cart button
+export const cart = [];
+// step 2: export cart (using the module's export)
