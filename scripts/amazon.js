@@ -55,9 +55,10 @@
 //   }
 // ];
 
-import {cart} from '../data/cart.js';
+import { cart } from '../data/cart.js';
 // const cart = [];
 // without module, this would be a conflict
+import { products } from '../data/products.js';
 
 let productHTML = ' '; 
 // every time a product is created, it will be stored in this STRING
