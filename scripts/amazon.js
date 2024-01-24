@@ -55,7 +55,7 @@
 //   }
 // ];
 
-import { cart } from '../data/cart.js';
+import { cart, addToCart } from '../data/cart.js';
 // const cart = [];
 // without module, this would be a conflict
 import { products } from '../data/products.js';
@@ -117,12 +117,25 @@ products.forEach((product) => {
     </div>
   `
 });
-
 // the DOM element for the HTML replacement
 document.querySelector('.js-product-grid').innerHTML = productHTML;
 
+// SPLITING CODES INTO FUNCTIONS \|/
+
+// calculate-total-quantity and update-quantity FUNCTION
+function calculateAndUpdateTotalQuantity() {
+  // calculate the total quantity of the product on the cart
+  let cartQuantity = 0;
+  cart.forEach((cartItem)=>{
+    cartQuantity += cartItem.quantity;
+  });
+  // replace number on HTML code with the calculated quantity
+  document.querySelector('.cart-quantity').innerHTML = cartQuantity;
+}
+
 // the DOM element for the buttons inside each product
 // data attributes v dataset
+// MAIN function of the BUTTONS
 document.querySelectorAll('.js-add-to-card').forEach((button)=>{
   // dataset property basically 
   // gives us all the data attributes 
@@ -131,40 +144,12 @@ document.querySelectorAll('.js-add-to-card').forEach((button)=>{
     const productId = button.dataset.productId;
     // since "productName" is inside "dataset", 
 		// then we can use "button.dataset.productName" to set with all the buttons
-    let matchingItem;
-    //select value from the options selected
-    const selectedValue = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
-    console.log(selectedValue)
-    cart.forEach((item)=>{
-      // item: object in the cart list
-      if (item.productId === productId) {
-        // item.productId is the property inside the cart array
-        // "productId" is the variable which equals "button.dataset.productId"
-        // if item.productId === button.dataset.productId
-        matchingItem = item;
-        // if they match, they will be put inside the empty object, 
-        // the mathcing Item
-      }
-    });
-    if (matchingItem) {
-      // if the items are matched, "matchingItem.quantity = matchingItem.quantity + 1"
-      // it means if it already in there, we need to add 1 on top of it
-      matchingItem.quantity += selectedValue;
-    } else {
-      // else if it's not there yet, then we need to push it to the cart array list
-      cart.push({
-        productId: productId,
-        quantity: selectedValue
-      })
-    }
     
-    // calculate the total quantity of the product on the cart
-    let cartQuantity = 0;
-    cart.forEach((item)=>{
-      cartQuantity += item.quantity;
-    });
-    // replace number on HTML code with the calculated quantity
-    document.querySelector('.cart-quantity').innerHTML = cartQuantity;
+    // calling add-to-cart func
+    addToCart(productId);
+    
+    // calling add-to-cart func
+    calculateAndUpdateTotalQuantity();
   })
 });
 // forEach to loop through each of the add-to-cart buttons
