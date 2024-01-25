@@ -139,18 +139,24 @@
   margin-bottom: 8px;
 
   /* At first, the "Added to cart" message will
-     be invisible. Use JavaScript to change the
+    be invisible. Use JavaScript to change the
      opacity and make it visible. */
   opacity: 0;
+  vertical-align: middle; /* Added property for vertical alignment */
 }
 
 .added-to-cart img {
   height: 20px;
   margin-right: 5px;
+  vertical-align: middle; /* Added property for vertical alignment */
 }
 
 .add-to-cart-button {
   width: 100%;
   padding: 8px;
   border-radius: 50px;
+}
+
+.added-to-cart-visible {
+  opacity: 1;
 }
