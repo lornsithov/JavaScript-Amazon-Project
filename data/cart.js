@@ -42,15 +42,15 @@ export function addToCart(productId) {
 
 
 // Remove ProductId from the cart array
-export function removeFromCart(productId) {
-  const newCart = [];
-  cart.forEach((cartItem)=>{
-    if (cart.productId !== productId) {
-      newCart.push(cartItem);
-    }
-  });
-  cart = newCart;
-}
+// export function removeFromCart(productId) {
+//   const newCart = [];
+//   cart.forEach((cartItem)=>{
+//     if (cart.productId !== productId) {
+//       newCart.push(cartItem);
+//     }
+//   });
+//   cart = newCart;
+// }
 
 // Modified remove-from-cart function
 export function removeFromCart(productId) {

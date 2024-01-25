@@ -20,7 +20,7 @@ cart.forEach((cartItem) => {
 
   cartSummaryHTML += 
   `
-  <div class="cart-item-container">
+  <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
     <div class="delivery-date">
       Delivery date: Tuesday, June 21
     </div>
@@ -126,5 +126,11 @@ deleteLinks.forEach((link) => {
     console.log('Clicked delete button for productId:', productId);
     removeFromCart(productId);
     console.log(cart)
+    
+    // Remove the cart container from the page
+    const container = document.querySelector(`.js-cart-item-container-${productId}`);
+      // declare a variable as the product container
+    container.remove();
+      // using the remove function
   });
 });
