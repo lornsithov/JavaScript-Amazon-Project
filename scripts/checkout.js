@@ -40,7 +40,8 @@ cart.forEach((cartItem) => {
           <span>
             Quantity: <span class="quantity-label">${cartItem.quantity}</span>
           </span>
-          <span class="update-quantity-link link-primary">
+
+          <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchingProduct.id}">
             Update
           </span>
           <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
@@ -117,3 +118,23 @@ deleteLinks.forEach((link) => {
     updateCartQuantity();
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Make the Update button interactve
+const updateLinks = document.querySelectorAll('.js-update-link');
+updateLinks.forEach((link) => {
+  link.addEventListener('click', () => {
+    console.log("update id : "+link.dataset.productId)
+  });
+})
