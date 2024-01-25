@@ -54,30 +54,9 @@ export function addToCart(productId) {
   saveToLocalStorage();
 }
 
-
-
-
-// Remove ProductId from the cart array
-// export function removeFromCart(productId) {
-//   const newCart = [];
-//   cart.forEach((cartItem)=>{
-//     if (cart.productId !== productId) {
-//       newCart.push(cartItem);
-//     }
-//   });
-//   cart = newCart;
-// }
-
 // Modified remove-from-cart function
 export function removeFromCart(productId) {
   cart = cart.filter((cartItem) => cartItem.productId !== productId);
   // calling save-to-local-storage function
   saveToLocalStorage();
 }
-/*  
-In the modified function, the use of the filter method simplifies the process. 
-It creates a new array by filtering out the items with a productId matching the one you want to remove. 
-This new array is then assigned to the cart variable.
-
-The filter method is a concise and effective way to create a new array based on a condition without directly modifying the original array.
-*/
