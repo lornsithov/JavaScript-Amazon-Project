@@ -137,5 +137,8 @@ const updateLinks = document.querySelectorAll('.js-update-link');
 updateLinks.forEach((link) => {
   link.addEventListener('click', () => {
     console.log("update id : "+link.dataset.productId)
+    const productId = link.dataset.productId;
+    const container = document.querySelector(`.js-cart-item-container-${productId}`);
+    container.classList.add('is-editing-quantity');
   });
 })
