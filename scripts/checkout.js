@@ -1,4 +1,4 @@
-import { cart } from '../data/cart.js';
+import { cart, removeFromCart } from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
@@ -43,7 +43,7 @@ cart.forEach((cartItem) => {
           <span class="update-quantity-link link-primary">
             Update
           </span>
-          <span class="delete-quantity-link link-primary">
+          <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
             Delete
           </span>
         </div>
@@ -97,5 +97,34 @@ cart.forEach((cartItem) => {
   </div>
   `;
 });
-
+// Generate the HTML code abt js-order-summary to the HTML file
 document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+
+// // Make the delete button clickable
+// document.querySelectorAll('.js-delete-link').forEach((link) => {
+//   // we loop thorugh those buttons and called them "link" the same way as the parameter "link"
+//   link.addEventListener('click', () => {
+//   //give an event listener and a function we want to run to those buttons we're looping through
+//     const productId = link.dataset.productId;
+//     console.log(productId)
+//   });
+// });
+// A NodeList is a collection of nodes, typically returned by methods such as querySelectorAll() 
+// when you query the DOM (Document Object Model) for elements that match a specified CSS selector. 
+// It is not an array but rather a node list, which is similar to an array in that it contains an ordered collection of nodes, 
+// but it doesn't have all the methods and properties of an array. 
+
+
+// Make the delete button clickable
+const deleteLinks = document.querySelectorAll('.js-delete-link');
+// query all the links
+deleteLinks.forEach((link) => {
+  // loop through all the links
+  link.addEventListener('click', () => {
+    // give an event listener and a function
+    const productId = link.dataset.productId;
+    console.log('Clicked delete button for productId:', productId);
+    removeFromCart(productId);
+    console.log(cart)
+  });
+});
