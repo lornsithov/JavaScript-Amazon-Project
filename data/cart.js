@@ -1,15 +1,27 @@
 // any products will be included in this cart 
 // when the user clicks add-to-cart button
-export let cart = [
-  {
-    productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-    quantity: 2,
-  },
-  {
-    productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
-    quantity: 1,
-  }
-];
+export let cart = JSON.parse(localStorage.getItem('cart'));
+// JSON.parse(...) is used to convert them to array
+
+if (!cart) {
+  // if the cart is empty, then use the default
+  cart = [
+    {
+      productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+      quantity: 2,
+    },
+    {
+      productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+      quantity: 1,
+    }
+  ];
+}
+
+// Save the carts to the Local Storage
+function saveToLocalStorage() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+  // LS only can save String (if it's not a string, then convert)
+}
 
 // (using the module's export) since we might use this function to export to amazon.js
 // ADD-TO-CART FUNCTION
@@ -38,7 +50,11 @@ export function addToCart(productId) {
       quantity: selectedValue
     })
   }
+  // calling save-to-local-storage function
+  saveToLocalStorage();
 }
+
+
 
 
 // Remove ProductId from the cart array
@@ -55,6 +71,8 @@ export function addToCart(productId) {
 // Modified remove-from-cart function
 export function removeFromCart(productId) {
   cart = cart.filter((cartItem) => cartItem.productId !== productId);
+  // calling save-to-local-storage function
+  saveToLocalStorage();
 }
 /*  
 In the modified function, the use of the filter method simplifies the process. 
