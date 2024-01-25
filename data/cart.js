@@ -17,10 +17,25 @@ if (!cart) {
   ];
 }
 
+// Displays Cart Objects by using .innerHTML
+document.addEventListener('DOMContentLoaded', function(){
+  updateCartQuantity();
+});
+
+export function updateCartQuantity() {
+  const cartQuantityElement = document.querySelector('.js-item-quantity-based-on-cart');
+  if (cartQuantityElement) {
+    cartQuantityElement.innerHTML = cart.length;
+  }
+}
+
 // Save the carts to the Local Storage
 function saveToLocalStorage() {
   localStorage.setItem('cart', JSON.stringify(cart));
   // LS only can save String (if it's not a string, then convert)
+  
+  // updateCartQuantity();
+  // Update the cart quantity dynamically
 }
 
 // (using the module's export) since we might use this function to export to amazon.js
@@ -52,6 +67,7 @@ export function addToCart(productId) {
   }
   // calling save-to-local-storage function
   saveToLocalStorage();
+  // updateCartQuantity();
 }
 
 // Modified remove-from-cart function
@@ -59,4 +75,5 @@ export function removeFromCart(productId) {
   cart = cart.filter((cartItem) => cartItem.productId !== productId);
   // calling save-to-local-storage function
   saveToLocalStorage();
+  // updateCartQuantity();
 }
