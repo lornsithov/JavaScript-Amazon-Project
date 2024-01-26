@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Save button click event
       saveButton.addEventListener('click', () => {
         const newQuantity = parseInt(quantityInput.value, 10) || 0;
-        if (newQuantity < 0) 
+        if (newQuantity <= 0) 
         {
           // Show a prompt alert for invalid input
           alert('Invalid quantity input. Please enter a valid quantity.');
