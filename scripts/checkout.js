@@ -158,14 +158,22 @@ document.addEventListener('DOMContentLoaded', () => {
       // Save button click event
       saveButton.addEventListener('click', () => {
         const newQuantity = parseInt(quantityInput.value, 10) || 0;
-        updateQuantity(productId, newQuantity);
-        console.log('saved');
+        if (newQuantity < 0) 
+        {
+          // Show a prompt alert for invalid input
+          alert('Invalid quantity input. Please enter a valid quantity.');
+        } 
+        else 
+        {
+          updateQuantity(productId, newQuantity);
+          console.log('saved');
 
-        // Hide input form and save button, show update button again
-        quantityEachProduct.style.display = 'initial';
-        quantityInput.style.display = 'none';
-        saveButton.style.display = 'none';
-        updateButton.style.display = 'initial';
+          // Hide input form and save button, show update button again
+          quantityEachProduct.style.display = 'initial';
+          quantityInput.style.display = 'none';
+          saveButton.style.display = 'none';
+          updateButton.style.display = 'initial';
+        }
       });
     });
   });
