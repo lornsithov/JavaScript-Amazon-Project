@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function(){
   updateCartQuantity();
 });
 
+// Update Cart Quantity (To calculate them and put them on the tile)
 export function updateCartQuantity() {
   // Find the HTML element that displays the cart quantity
   const cartQuantityElement = document.querySelector('.js-item-quantity-based-on-cart');
@@ -70,6 +71,7 @@ export function removeFromCart(productId) {
   updateCartQuantity(); // Update the cart quantity dynamically
 }
 
+// Update Quantity (by using input from the input field)
 export function updateQuantity(productId, newQuantity) {
   let matchingItem;
 

@@ -120,16 +120,6 @@ deleteLinks.forEach((link) => {
   });
 });
 
-// // Make the Update button interactive
-// const updateLinks = document.querySelectorAll('.js-update-quantity-link');
-// updateLinks.forEach((link) => {
-//   link.addEventListener('click', () => {
-//     console.log("update id : " + link.dataset.productId);
-//     const productId = link.dataset.productId;
-//     const container = document.querySelector(`.js-cart-item-container-${productId}`);
-//   });
-// });
-
 // Make the Update button interactive
 document.addEventListener('DOMContentLoaded', () => {
   const updateLinks = document.querySelectorAll('.js-update-quantity-link');
