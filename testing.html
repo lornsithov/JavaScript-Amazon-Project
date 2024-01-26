@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toggle Buttons</title>
+    <style>
+        #inputForm, #saveButton {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <button id="updateButton" onclick="toggleButtons()">Update</button>
+    <input type="text" id="inputForm" placeholder="Enter a number">
+    <button id="saveButton" onclick="saveAndToggle()">Save</button>
+</div>
+
+<script>
+    function toggleButtons() {
+        var updateButton = document.getElementById('updateButton');
+        var inputForm = document.getElementById('inputForm');
+        var saveButton = document.getElementById('saveButton');
+
+        updateButton.style.display = 'none';
+        inputForm.style.display = 'block';
+        saveButton.style.display = 'block';
+    }
+
+    function saveAndToggle() {
+        var updateButton = document.getElementById('updateButton');
+        var inputForm = document.getElementById('inputForm');
+        var saveButton = document.getElementById('saveButton');
+
+        // Perform save logic here
+
+        updateButton.style.display = 'block';
+        inputForm.style.display = 'none';
+        saveButton.style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

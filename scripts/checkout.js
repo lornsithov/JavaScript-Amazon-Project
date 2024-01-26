@@ -1,5 +1,5 @@
-import { cart, removeFromCart, updateCartQuantity } from '../data/cart.js';
-import { products } from '../data/products.js';
+import { cart, removeFromCart, updateCartQuantity, updateQuantity } from '../data/cart.js';
+import { products } from '../data/products.js';   
 import { formatCurrency } from './utils/money.js';
 
 let cartSummaryHTML = '';
@@ -38,11 +38,11 @@ cart.forEach((cartItem) => {
         </div>
         <div class="product-quantity">
           <span>
-            Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+            Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id} js-quantity-link">${cartItem.quantity}</span>
           </span>
-          <input class="quantity-input" type="number">
-          <span class="save-quantity-link link-primary">Save</span>
-          <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchingProduct.id}">
+          <input class="quantity-input js-quantity-input" type="number">
+          <span class="save-quantity-link link-primary js-save-quantity-link">Save</span>
+          <span class="update-quantity-link link-primary js-update-quantity-link" data-product-id="${matchingProduct.id}">
             Update
           </span>
           <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
@@ -120,25 +120,53 @@ deleteLinks.forEach((link) => {
   });
 });
 
+// // Make the Update button interactive
+// const updateLinks = document.querySelectorAll('.js-update-quantity-link');
+// updateLinks.forEach((link) => {
+//   link.addEventListener('click', () => {
+//     console.log("update id : " + link.dataset.productId);
+//     const productId = link.dataset.productId;
+//     const container = document.querySelector(`.js-cart-item-container-${productId}`);
+//   });
+// });
 
+// Make the Update button interactive
+document.addEventListener('DOMContentLoaded', () => {
+  const updateLinks = document.querySelectorAll('.js-update-quantity-link');
+  updateLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      console.log("updated")
+      const productId = link.dataset.productId;
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
+      const quantityEachProduct = container.querySelector('.js-quantity-link');
+      const quantityInput = container.querySelector('.js-quantity-input');
+      const saveButton = container.querySelector('.js-save-quantity-link');
+      const updateButton = container.querySelector('.js-update-quantity-link');
 
+      // Toggle visibility of input form, save button, and update button
+      quantityEachProduct.style.display = 'none';
+      quantityInput.style.display = 'initial';
+      saveButton.style.display = 'initial';
+      updateButton.style.display = 'none';
 
+      // Update the quantity dynamically when input changes
+      quantityInput.addEventListener('input', () => {
+        const newQuantity = parseInt(quantityInput.value, 10) || 0;
+        container.querySelector('.quantity-label').innerText = newQuantity;
+      });
 
+      // Save button click event
+      saveButton.addEventListener('click', () => {
+        const newQuantity = parseInt(quantityInput.value, 10) || 0;
+        updateQuantity(productId, newQuantity);
+        console.log('saved');
 
-
-
-
-
-
-
-
-// Make the Update button interactve
-const updateLinks = document.querySelectorAll('.js-update-link');
-updateLinks.forEach((link) => {
-  link.addEventListener('click', () => {
-    console.log("update id : "+link.dataset.productId)
-    const productId = link.dataset.productId;
-    const container = document.querySelector(`.js-cart-item-container-${productId}`);
-    container.classList.add('is-editing-quantity');
+        // Hide input form and save button, show update button again
+        quantityEachProduct.style.display = 'initial';
+        quantityInput.style.display = 'none';
+        saveButton.style.display = 'none';
+        updateButton.style.display = 'initial';
+      });
+    });
   });
-})
+});

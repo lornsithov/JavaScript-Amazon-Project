@@ -1,6 +1,6 @@
 // any products will be included in this cart 
 // when the user clicks add-to-cart button
-export let cart = JSON.parse(localStorage.getItem('cart'));
+export let cart = JSON.parse(localStorage.getItem('cart')) || [];
 // JSON.parse(...) is used to convert them to array
 
 if (!cart) {
@@ -51,12 +51,9 @@ export function addToCart(productId) { // the reason we use productId parameter 
       matchingItem = cartItem; // if they match, they will be put inside the empty object,
     }
   });
-  if (matchingItem) {
-    // if the items are matched    
-    matchingItem.quantity += selectedValue;
-    // (selectedvalue is from the quantity selection)
-  } else {
-    // else if it's not there yet, then we need to push it to the cart array list
+  if (matchingItem) { // if the items are matched
+    matchingItem.quantity += selectedValue; // (selectedvalue is from the quantity selection)
+  } else { // else if it's not there yet, then we need to push it to the cart array list
     cart.push({
       productId: productId,
       quantity: selectedValue
@@ -71,4 +68,18 @@ export function removeFromCart(productId) {
   cart = cart.filter((cartItem) => cartItem.productId !== productId);
   saveToLocalStorage(); // calling save-to-local-storage function
   updateCartQuantity(); // Update the cart quantity dynamically
+}
+
+export function updateQuantity(productId, newQuantity) {
+  let matchingItem;
+
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem;
+    }
+  });
+
+  matchingItem.quantity = newQuantity;
+
+  saveToLocalStorage();
 }
