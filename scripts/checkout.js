@@ -1,14 +1,11 @@
 import { cart, removeFromCart, updateCartQuantity, updateQuantity } from '../data/cart.js';
+import { deliveryOptions } from '../data/deliveryOptions.js';
 import { products } from '../data/products.js';   
 import formatCurrency from './utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 
-const today = dayjs();
-const deliveryDate = today.add(7, 'days');
-console.log(deliveryDate.format('dddd, MMMM D'));
-
+// Generate Cart Summary
 let cartSummaryHTML = '';
-
 cart.forEach((cartItem) => {
   // Use this to search for the whole product (then we need to import products in here)
   const productId = cartItem.productId;
@@ -23,11 +20,30 @@ cart.forEach((cartItem) => {
   });
   // console.log(matchingProduct);
 
-  cartSummaryHTML += 
-  `
+  // replace delivery date with the selected date
+  const deliveryOptionId = cartItem.deliveryOptionId;
+  let deliveryOption;
+  deliveryOptions.forEach((option) => {
+    // if (option.id === deliveryOptionId) {
+    //   deliveryOption = option;
+    // }
+    console.log(option.id);
+  });
+
+  // Add these console logs to check the values
+  console.log('deliveryOptionId:', deliveryOptionId);
+  console.log('deliveryOptions:', deliveryOptions);
+  console.log('Matching deliveryOption:', deliveryOption);
+
+  // const today = dayjs();
+  // const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+  // const dateString = deliveryDate.format('dddd, MMMM D');
+
+  cartSummaryHTML +=
+    `
   <div class="cart-item-container js-cart-item-container-${matchingProduct.id} is-editing-quantity">
     <div class="delivery-date">
-      Delivery date: Tuesday, June 21
+      Delivery date: 
     </div>
 
     <div class="cart-item-details-grid">
@@ -60,52 +76,14 @@ cart.forEach((cartItem) => {
         <div class="delivery-options-title">
           Choose a delivery option:
         </div>
-        <div class="delivery-option">
-          <input type="radio" checked
-            class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}">
-          <div>
-            <div class="delivery-option-date">
-              Tuesday, June 21
-            </div>
-            <div class="delivery-option-price">
-              FREE Shipping
-            </div>
-          </div>
-        </div>
-        <div class="delivery-option">
-          <input type="radio"
-            class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}">
-          <div>
-            <div class="delivery-option-date">
-              Wednesday, June 15
-            </div>
-            <div class="delivery-option-price">
-              $4.99 - Shipping
-            </div>
-          </div>
-        </div>
-        <div class="delivery-option">
-          <input type="radio"
-            class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}">
-          <div>
-            <div class="delivery-option-date">
-              Monday, June 13
-            </div>
-            <div class="delivery-option-price">
-              $9.99 - Shipping
-            </div>
-          </div>
-        </div>
+        ${deliveryOptionsHTML(matchingProduct, cartItem)}
       </div>
     </div>
   </div>
   `;
 });
-// Generate the HTML code abt js-order-summary to the HTML file
-document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+document.querySelector('.js-cart-summary').innerHTML = cartSummaryHTML;
+
 
 // Make the delete button clickable
 const deleteLinks = document.querySelectorAll('.js-delete-link');
@@ -162,7 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
         {
           updateQuantity(productId, newQuantity);
           console.log('saved');
-
           // Hide input form and save button, show update button again
           quantityEachProduct.style.display = 'initial';
           quantityInput.style.display = 'none';
@@ -173,3 +150,85 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// Generate Delivery Options
+function deliveryOptionsHTML(matchingProduct, cartItem) {
+  // const today = dayjs();
+  // const deliveryDate = today.add(7, 'days');
+  // console.log(deliveryDate.format('dddd, MMMM D'));
+  // console.log(deliveryOptions)
+  
+  let html = ``
+  deliveryOptions.forEach((deliveryOption) => {
+    const today = dayjs();
+    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+    const dateString = deliveryDate.format('dddd, MMMM D')
+
+    // Conditional (ternary) operator
+    // condition ? exprIfTrue : exprIfFalse
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator
+    const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)}`;
+
+    // checked delivery option
+    const isChecked = deliveryOption.id === parseInt(cartItem.deliveryOptionId);
+    
+    html += `
+      <div class="delivery-option">
+        <input type="radio"
+          ${isChecked ? 'checked' : ''}
+          class="delivery-option-input"
+          name="delivery-option-${matchingProduct.id}">
+        <div>
+          <div class="delivery-option-date">
+            ${dateString}
+          </div>
+          <div class="delivery-option-price">
+            ${priceString} - Shipping
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  return html;
+}
+
+// Generate order summary HTML
+let orderSummaryHTML = 
+`
+  <div class="payment-summary-title">
+    Order Summary
+  </div>
+
+  <div class="payment-summary-row">
+    <div>Items (3):</div>
+    <div class="payment-summary-money">$42.75</div>
+  </div>
+
+  <div class="payment-summary-row">
+    <div>Shipping &amp; handling:</div>
+    <div class="payment-summary-money">$4.99</div>
+  </div>
+
+  <div class="payment-summary-row subtotal-row">
+    <div>Total before tax:</div>
+    <div class="payment-summary-money">$47.74</div>
+  </div>
+
+  <div class="payment-summary-row">
+    <div>Estimated tax (10%):</div>
+    <div class="payment-summary-money">$4.77</div>
+  </div>
+
+  <div class="payment-summary-row total-row">
+    <div>Order total:</div>
+    <div class="payment-summary-money">$52.51</div>
+  </div>
+
+  <button class="place-order-button button-primary">
+    Place your order
+  </button>
+  </div>
+`;
+document.querySelector('.js-payment-summary').innerHTML = orderSummaryHTML;
+
+// 
