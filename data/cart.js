@@ -52,13 +52,18 @@ function saveToLocalStorage() {
 
 // ADD-TO-CART FUNCTION // (using the module's export) since we might use this function to export to amazon.js
 export function addToCart(productId) { // the reason we use productId parameter because productId var is inside the forEach loop
+
   let matchingItem; // decalre the matching item variable
-  const selectedValue = Number(document.querySelector(`.js-quantity-selector-${productId}`).value); //select value from the options selected (if it gets selected as 10, that selectedValue could be 10)
+
   cart.forEach((cartItem)=>{ // loop through cart array and give a parameter as cartItem
     if (cartItem.productId === productId) { // "productId" = "button.dataset.productId"
       matchingItem = cartItem; // if they match, they will be put inside the empty object,
     }
   });
+  
+  // Selected Value of product
+  const selectedValue = Number(document.querySelector(`.js-quantity-selector-${productId}`).value); //select value from the options selected (if it gets selected as 10, that selectedValue could be 10)
+  
   if (matchingItem) { // if the items are matched
     matchingItem.quantity += selectedValue; // (selectedvalue is from the quantity selection)
   } else { // else if it's not there yet, then we need to push it to the cart array list
@@ -68,7 +73,9 @@ export function addToCart(productId) { // the reason we use productId parameter 
       deliveryOptionId: '1'
     })
   }
+
   saveToLocalStorage(); // calling save-to-local-storage function
+  
   updateCartQuantity(); // Update the cart quantity dynamically
 }
 
@@ -90,6 +97,22 @@ export function updateQuantity(productId, newQuantity) {
   });
 
   matchingItem.quantity = newQuantity;
+
+  saveToLocalStorage();
+}
+
+// Update Delivery Option
+export function updateDeliveryOption(productId, deliveryoptionId) {
+
+  let matchingItem;
+
+  cart.forEach((cartItem)=>{
+    if (cartItem.productId === productId) {
+      matchingItem = cartItem;
+    }
+  });
+
+  matchingItem.deliveryOptionId = deliveryoptionId; 
 
   saveToLocalStorage();
 }
