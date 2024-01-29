@@ -7,7 +7,6 @@ import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 // Generate Cart Summary
 let cartSummaryHTML = '';
 cart.forEach((cartItem) => {
-  // Use this to search for the whole product (then we need to import products in here)
   const productId = cartItem.productId;
 
   let matchingProduct;
@@ -15,35 +14,30 @@ cart.forEach((cartItem) => {
   products.forEach((product) => {
     if (product.id === productId) {
       matchingProduct = product;
-      // if matchingProduct equals product that we're looping through
     }
   });
-  // console.log(matchingProduct);
 
   // replace delivery date with the selected date
   const deliveryOptionId = cartItem.deliveryOptionId;
+
   let deliveryOption;
   deliveryOptions.forEach((option) => {
-    // if (option.id === deliveryOptionId) {
-    //   deliveryOption = option;
-    // }
-    console.log(option.id);
+    if (option.id === parseInt(cartItem.deliveryOptionId)) {
+      deliveryOption = option;
+    }
   });
 
-  // Add these console logs to check the values
-  console.log('deliveryOptionId:', deliveryOptionId);
-  console.log('deliveryOptions:', deliveryOptions);
-  console.log('Matching deliveryOption:', deliveryOption);
+  console.log(deliveryOption);
 
-  // const today = dayjs();
-  // const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-  // const dateString = deliveryDate.format('dddd, MMMM D');
+  const today = dayjs();
+  const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+  const dateString = deliveryDate.format('dddd, MMMM D');
 
   cartSummaryHTML +=
     `
   <div class="cart-item-container js-cart-item-container-${matchingProduct.id} is-editing-quantity">
     <div class="delivery-date">
-      Delivery date: 
+      Delivery date: ${dateString}
     </div>
 
     <div class="cart-item-details-grid">
@@ -73,7 +67,7 @@ cart.forEach((cartItem) => {
       </div>
 
       <div class="delivery-options">
-        <div class="delivery-options-title">
+        <div class="delivery-options-title js-delivery-option-selector-${matchingProduct.id}">
           Choose a delivery option:
         </div>
         ${deliveryOptionsHTML(matchingProduct, cartItem)}
@@ -170,7 +164,7 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
     const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)}`;
 
     // checked delivery option
-    const isChecked = deliveryOption.id === parseInt(cartItem.deliveryOptionId);
+    const isChecked = deliveryOption.id === parseInt(cartItem.deliveryOptionId); // since the deliveryoptionid inside the local storage is string
     
     html += `
       <div class="delivery-option">
@@ -191,6 +185,8 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
   });
   return html;
 }
+
+// Make the options selectable
 
 // Generate order summary HTML
 let orderSummaryHTML = 
@@ -230,5 +226,3 @@ let orderSummaryHTML =
   </div>
 `;
 document.querySelector('.js-payment-summary').innerHTML = orderSummaryHTML;
-
-// 
