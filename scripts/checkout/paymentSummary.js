@@ -11,15 +11,18 @@ export function renderPaymentSummary() {
     // calculate the items price
     const product = getProduct(cartItem.productId)
     productPriceCents += product.priceCents * cartItem.quantity;
+    // console.log(formatCurrency(productPriceCents));
 
     // calculate the shipping charges
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId)
     shippingPriceCents += deliveryOption.priceCents;
+    // console.log(formatCurrency(shippingPriceCents));
   });
   const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
+  console.log(formatCurrency(totalBeforeTaxCents));
   const totalTaxCents = totalBeforeTaxCents * 0.1; 
   const totalAfterTaxCents = totalBeforeTaxCents + totalTaxCents;
-  
+
   // Generate order summary HTML
   let orderSummaryHTML = 
   `
@@ -29,27 +32,27 @@ export function renderPaymentSummary() {
 
     <div class="payment-summary-row">
       <div>Items (3):</div>
-      <div class="payment-summary-money">$42.75</div>
+      <div class="payment-summary-money">$${formatCurrency(productPriceCents)}</div>
     </div>
 
     <div class="payment-summary-row">
       <div>Shipping &amp; handling:</div>
-      <div class="payment-summary-money">$4.99</div>
+      <div class="payment-summary-money">$${formatCurrency(shippingPriceCents)}</div>
     </div>
 
     <div class="payment-summary-row subtotal-row">
       <div>Total before tax:</div>
-      <div class="payment-summary-money">$47.74</div>
+      <div class="payment-summary-money">$${formatCurrency(totalBeforeTaxCents)}</div>
     </div>
 
     <div class="payment-summary-row">
       <div>Estimated tax (10%):</div>
-      <div class="payment-summary-money">$4.77</div>
+      <div class="payment-summary-money">$${formatCurrency(totalTaxCents)}</div>
     </div>
 
     <div class="payment-summary-row total-row">
       <div>Order total:</div>
-      <div class="payment-summary-money">$52.51</div>
+      <div class="payment-summary-money">$${formatCurrency(totalAfterTaxCents)}</div>
     </div>
 
     <button class="place-order-button button-primary">
