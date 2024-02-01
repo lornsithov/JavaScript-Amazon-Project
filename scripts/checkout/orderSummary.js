@@ -1,8 +1,8 @@
 import { cart, removeFromCart, updateCartQuantity, updateQuantity, updateDeliveryOption } from '../../data/cart.js';
-import { products } from '../../data/products.js';   
+import { products, getProduct } from '../../data/products.js';   
 import formatCurrency from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { deliveryOptions } from '../../data/deliveryOptions.js';
+import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
 
 // The main function which is used to render the code   
 export function renderOrderSummary() {
@@ -11,25 +11,25 @@ export function renderOrderSummary() {
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
 
-    let matchingProduct;
-
-    products.forEach((product) => {
-      if (product.id === productId) {
-        matchingProduct = product;
-      }
-    });
+    // looping through all products to find the mathcing products
+    // let matchingProduct;
+    // products.forEach((product) => {
+    //   if (product.id === productId) {
+    //     matchingProduct = product;
+    //   }
+    // });
+    const matchingProduct = getProduct(productId);
+    // since we no longer change the number inside the matchingProduct then we use 'const' instead of 'let'
 
     // replace delivery date with the selected date
     const deliveryOptionId = cartItem.deliveryOptionId;
-
-    let deliveryOption;
-    deliveryOptions.forEach((option) => {
-      if (option.id === parseInt(cartItem.deliveryOptionId)) {
-        deliveryOption = option;
-      }
-    });
-
-    // console.log(deliveryOption);
+    // let deliveryOption;
+    // deliveryOptions.forEach((option) => {
+    //   if (option.id === parseInt(deliveryOptionId)) {
+    //     deliveryOption = option;
+    //   }
+    // });
+    const deliveryOption = getDeliveryOption(deliveryOptionId);
 
     const today = dayjs();
     const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
@@ -238,7 +238,6 @@ export function renderOrderSummary() {
     </div>
   `;
   document.querySelector('.js-payment-summary').innerHTML = orderSummaryHTML;
-
 }
 
 // renderOrderSummary();
