@@ -14,13 +14,9 @@ export function renderPaymentSummary() {
 
     // calculate the shipping charges
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId)
-    // console.log(deliveryOption);
     shippingPriceCents += deliveryOption.priceCents;
   });
-  // console.log(formatCurrency(productPriceCents));
-  // console.log(formatCurrency(shippingPriceCents));
   const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
-  console.log(formatCurrency(totalBeforeTaxCents));
   const totalTaxCents = totalBeforeTaxCents * 0.1; 
   const totalAfterTaxCents = totalBeforeTaxCents + totalTaxCents;
 }
