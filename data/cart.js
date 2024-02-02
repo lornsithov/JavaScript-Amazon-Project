@@ -24,6 +24,19 @@ if (!cart || cart.length === 0) {
   ];
 }
 
+export function getCartProduct(productId) {
+
+  let matchingProduct;
+
+  cart.forEach((cartItem) => {
+    if (cartItem.productId === productId) {
+      matchingProduct = cartItem;
+    }
+  });
+  
+  return matchingProduct;
+}
+
 // Displays Cart Objects by using .innerHTML
 document.addEventListener('DOMContentLoaded', function(){
   updateCartQuantity();
